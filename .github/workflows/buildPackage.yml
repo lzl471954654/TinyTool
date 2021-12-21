@@ -34,6 +34,8 @@ jobs:
         with:
           java-version : 16
           
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: start to build
         run: ./gradlew package
 
