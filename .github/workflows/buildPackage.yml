@@ -33,6 +33,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version : 16
+          
+      - name: start to build
+        run: ./gradlew package
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
