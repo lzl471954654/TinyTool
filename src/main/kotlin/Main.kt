@@ -16,7 +16,7 @@ import androidx.compose.ui.window.*
 import java.awt.image.BufferedImage
 import java.net.URI
 
-var imageSize = 200
+var imageSize = 400
 
 @Composable
 @Preview
@@ -36,7 +36,7 @@ fun main() = application {
         App()
     }
     imageSize = with(LocalDensity.current) {
-        400.dp.toPx()
+        500.dp.toPx()
     }.toInt()
     val trayState = rememberTrayState()
     Tray(

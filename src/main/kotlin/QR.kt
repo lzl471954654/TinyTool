@@ -14,16 +14,14 @@ import com.google.zxing.*
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource
 import com.google.zxing.client.j2se.MatrixToImageWriter
 import com.google.zxing.common.HybridBinarizer
+import java.awt.Image
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.image.BufferedImage
 
+
 @Composable
 fun qrLayout() {
-    var imgFromMem by remember { mutableStateOf(BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)) }
-    var decodeText by remember { mutableStateOf("") }
-    var imgFromText by remember { mutableStateOf(getFirstBitmap()) }
-    var encodeText by remember { mutableStateOf("") }
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -77,7 +75,7 @@ fun qrDecodeLayout(){
             Image(
                 imgFromText.toComposeImageBitmap(),
                 "",
-                Modifier.size(400.dp).weight(1f,false).padding(16.dp)
+                Modifier.size(500.dp).weight(1f,false).padding(16.dp)
             )
         }
     }
@@ -131,6 +129,8 @@ fun decode(bufferedImage: BufferedImage?): String? {
         val decodeHints = hashMapOf(DecodeHintType.CHARACTER_SET to "UTF-8")
         val result = MultiFormatReader().decode(binaryBitmap, decodeHints)
         return result.text
+    }.exceptionOrNull()?.let {
+        System.err.println(it)
     }
     return null
 }
@@ -152,7 +152,24 @@ fun readImgFromClipBoard(): BufferedImage? {
     val systemClipboard = Toolkit.getDefaultToolkit().systemClipboard
     val contents = systemClipboard.getContents(null)
     if (contents.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-        return contents.getTransferData(DataFlavor.imageFlavor) as BufferedImage
+        val img = contents.getTransferData(DataFlavor.imageFlavor)
+        if (img is BufferedImage){
+            return img as BufferedImage
+        }
+        if (img is Image){
+            return convertToBufferedImage(img)
+        }
     }
     return null
+}
+
+fun convertToBufferedImage(image: Image): BufferedImage? {
+    val newImage = BufferedImage(
+        image.getWidth(null), image.getHeight(null),
+        BufferedImage.TYPE_INT_RGB
+    )
+    val g = newImage.createGraphics()
+    g.drawImage(image, 0, 0, null)
+    g.dispose()
+    return newImage
 }
