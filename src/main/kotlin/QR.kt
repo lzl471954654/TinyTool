@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage
 
 @Composable
 fun qrLayout() {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+    Column(Modifier.wrapContentSize(), verticalArrangement = Arrangement.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

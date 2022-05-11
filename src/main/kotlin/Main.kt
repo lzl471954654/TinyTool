@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import ext.urlParseUI
 import java.awt.image.BufferedImage
 import java.net.URI
 
@@ -22,7 +23,15 @@ var imageSize = 400
 @Preview
 fun App() {
     MaterialTheme {
-        qrLayout()
+        Row {
+            Box (Modifier.wrapContentSize().weight(3f,true)){
+                qrLayout()
+            }
+            Box (Modifier.wrapContentSize().weight(2f,true)){
+                urlParseUI()
+            }
+        }
+
     }
 }
 
@@ -59,31 +68,3 @@ fun main() = application {
         }
     )
 }
-
-fun urlParseToDict(url: String?): String? {
-    url ?: return null
-    URI.create(url)?.query?.let { query ->
-        val builder = StringBuilder()
-        for (entry in query.split('&')) {
-            builder.append(entry)
-                .append("\n")
-        }
-        return builder.toString()
-    }
-    return null
-}
-
-fun <T> List<T>.safeGet(index: Int): T? {
-    if (index >= this.size) {
-        return null
-    }
-    return this[index]
-}
-
-fun <T> Array<T>.safeGet(index: Int): T? {
-    if (index >= this.size) {
-        return null
-    }
-    return this[index]
-}
-
