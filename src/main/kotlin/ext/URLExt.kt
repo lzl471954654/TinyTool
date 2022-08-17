@@ -1,7 +1,6 @@
 package ext
 
 import java.net.URI
-import java.net.URL
 
 fun urlParseToDict(url: String?): String? {
     url ?: return null
@@ -18,7 +17,9 @@ fun urlParseToDict(url: String?): String? {
 
 fun urlParseToDetail(url: String?) : String? {
     url ?: return null
-    val uri = URI.create(url)
+    val uri = runCatching {
+        return@runCatching URI.create(url)
+    }.getOrNull()
     val port = uri?.port
     val scheme = uri?.scheme
     val host = uri?.host

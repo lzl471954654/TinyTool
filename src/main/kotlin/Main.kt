@@ -13,6 +13,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import ext.base64UI
+import ext.urlEncodeAndDecodeUI
 import ext.urlParseUI
 import java.awt.image.BufferedImage
 import java.net.URI
@@ -30,6 +32,13 @@ fun App() {
             Box (Modifier.wrapContentSize().weight(2f,true)){
                 urlParseUI()
             }
+            Box (Modifier.wrapContentSize().weight(2f, true)){
+                urlEncodeAndDecodeUI()
+            }
+            Box (Modifier.wrapContentSize().weight(2f, true)){
+                base64UI()
+            }
+
         }
 
     }
